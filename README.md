@@ -21,3 +21,11 @@ INSERT INTO `user` (`id`, `name`, `email`) VALUES
 COMMIT;
 
 Finally, to run this project you need to open cmd and type mvnw spring-boot:run or .\mvnw spring-boot:run on the project's root folder.
+
+How to use it ... well, you can create a new person using the pessoas menu and then clicking in the "cadastrar" option ... thats the same as localhost:8080/add...
+
+To see all the registered people you can go to Pessoas >> Listar option on the menu, thats the sema as the home page...
+
+To Delete and Update records you can use the buttons "Editar" and "Deletar"...
+
+Thats it, i hope it helps someone.
