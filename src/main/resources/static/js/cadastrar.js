@@ -13,10 +13,8 @@ $(document).ready(function() {
 
         $.ajax({
             method: 'post',
-            url: "http://localhost:8080/user/add",
+            url: "/user/add",
             data: $("#form-cadastrar").serialize(),
-            before: () => {
-            },
             complete: () => {
 
                 console.log(nameField.length, emailField.length)

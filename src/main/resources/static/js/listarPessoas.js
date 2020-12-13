@@ -2,7 +2,7 @@ $(document).ready(function() {
     $.ajax({
         method: 'get',
         dataType: 'json',
-        url: "http://localhost:8080/user/listar",
+        url: "/user/listar",
         before: () => console.log('before'),
         complete: () => console.log('complete'),
         success: (dados) => {
