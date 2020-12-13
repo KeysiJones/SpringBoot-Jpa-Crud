@@ -20,7 +20,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.example.crud.model.User;
-import com.example.crud.model.UserRepository;
+import com.example.crud.repository.UserRepository;
 
 @CrossOrigin
 @RestController // This means that this class is a RestController
