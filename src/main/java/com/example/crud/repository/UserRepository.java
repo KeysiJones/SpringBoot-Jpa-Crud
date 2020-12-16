@@ -1,5 +1,7 @@
 package com.example.crud.repository;
 
+import java.util.List;
+
 import com.example.crud.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,5 +10,5 @@ import org.springframework.stereotype.Repository;
 // CRUD refers Create, Read, Update, Delete
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
+    List<User> findByNameContaining(String name);
 }

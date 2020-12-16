@@ -15,10 +15,10 @@ public class User {
   private Integer id;
   
   @NotNull
-	@Size(min=2, max=30, message = "O nome deve ter no mínimo 2 caracteres")
+	@Size(min=5, max=30, message = "O nome deve ter no mínimo 5 caracteres")
   private String name;
   @NotNull
-	@Size(min=2, max=30, message = "O email deve ter no mínimo 2 caracteres")
+	@Size(min=5, max=30, message = "O email deve ter no mínimo 5 caracteres")
   private String email;
 
   public Integer getId() {

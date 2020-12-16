@@ -35,7 +35,11 @@ public class MainController {
   public ResponseEntity<String> addNewUser(@Valid User user) {
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
-    userRepository.save(user);
+    try {
+      userRepository.save(user);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
     
     return new ResponseEntity<String>("Cadastrado com sucesso", HttpStatus.OK);
   }
@@ -90,6 +94,16 @@ public class MainController {
   public List<User> getAllUsers() {
     // This returns a JSON or XML with the users
     return userRepository.findAll();
+  }
+
+  @PostMapping(path="/buscarPorNome")
+  public List<User> getUserByName(String name) {
+    // This returns a JSON or XML with the users
+    if(name.length() == 0){
+      return userRepository.findAll();
+    }
+    
+    return userRepository.findByNameContaining(name);
   }
 
   @GetMapping(path="/ListarPessoas")
