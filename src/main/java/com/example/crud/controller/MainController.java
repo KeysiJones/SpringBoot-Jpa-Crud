@@ -67,11 +67,12 @@ public class MainController {
 
   @PutMapping(path="/edit/{id}")
 
-  public ResponseEntity<?> atualizar(Integer id, String email) {
+  public ResponseEntity<?> atualizar(Integer id, String email, String name) {
 
     return userRepository.findById(id)
               .map(record -> {
                 record.setEmail(email);
+                record.setName(name);
                 userRepository.save(record);
                 return new ResponseEntity<String>("Registro atualizado com sucesso", HttpStatus.OK);
               })
@@ -88,22 +89,21 @@ public class MainController {
            }).orElse(ResponseEntity.notFound().build());
     
   }
-
   
   @GetMapping(path="/listar")
   public List<User> getAllUsers() {
     // This returns a JSON or XML with the users
-    return userRepository.findAll();
+    return userRepository.findAllByOrderByNameAsc();
   }
 
   @PostMapping(path="/buscarPorNome")
   public List<User> getUserByName(String name) {
     // This returns a JSON or XML with the users
     if(name.length() == 0){
-      return userRepository.findAll();
+      return userRepository.findAllByOrderByNameAsc();
     }
     
-    return userRepository.findByNameContaining(name);
+    return userRepository.findByNameContainingOrderByNameAsc(name);
   }
 
   @GetMapping(path="/ListarPessoas")

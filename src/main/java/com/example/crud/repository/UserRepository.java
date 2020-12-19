@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 // CRUD refers Create, Read, Update, Delete
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    List<User> findByNameContaining(String name);
+    List<User> findByNameContainingOrderByNameAsc(String name);
+    List<User> findAllByOrderByNameAsc();
 }
