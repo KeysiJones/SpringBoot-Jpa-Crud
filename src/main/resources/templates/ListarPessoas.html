@@ -22,7 +22,7 @@
             Pessoas
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/add">Cadastrar</a>
+            <a class="dropdown-item" href="#" id="btn-cadastrar">Cadastrar</a>
             <a class="dropdown-item" href="/">Listar</a>
           </div>
         </li>
@@ -34,8 +34,8 @@
   </nav>
     <h1 class="text-center mt-4 mb-4">Spring Boot Crud</h1>
     <div class="col-md-12">
-      <form id="form-buscar" class="my-4 mx-4 align-items-center" autocomplete='off'>
-        <input class="form-control" type="search" placeholder="Pesquisar" aria-label="Search" id="buscar">
+      <form id="form-buscar" class=" my-4 mx-4" autocomplete='off'>
+<input class="form-control" type="search" placeholder="Pesquisar" aria-label="Search" id="buscar"></input>
       </form>
     </div>
 
@@ -64,11 +64,30 @@
   <tbody>
   </tbody>
  </table>
+
+<!-- Modal para cadastrar pessoas -->
+<div class="modal fade" id="CadastrarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info rounded-top">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-ajax">
+        ...
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
  <div class="alert alert-warning" id="feedbackConsulta" style="display: none">Nenhum registro encontrado !</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="../js/listarPessoas.js"></script>
-    <script src="../js/buscarPorNome.js"></script>
+    <script src="../js/cadastrar.js"></script>
 </body>
 </html>
 </body>

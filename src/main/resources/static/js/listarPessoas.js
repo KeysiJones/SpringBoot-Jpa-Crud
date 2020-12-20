@@ -1,7 +1,9 @@
 $(document).ready(function() {
 
 	const buscarRegistros = () => {
-
+		
+		$("#TabelaOs tbody").html('')
+		
 		let data = ''
 		let metodo = 'get'
 		let url = "/user/listar"
@@ -81,6 +83,11 @@ $(document).ready(function() {
 								error: (erro) => console.log(erro)
 							})
 						}
+
+						btnSalvar.classList.add("d-none");
+						btnEditar.classList.remove("d-none");
+						email.innerHTML = `<td id='email-${item.id}'>${item.email}</td>`
+						name.innerHTML = `<td id='name-${item.id}'>${item.name}</td>`
 	
 					})
 	
@@ -135,6 +142,24 @@ $(document).ready(function() {
 	
 	$("#buscar").on('keyup', () => {
 		$("#TabelaOs tbody").html('')
+		buscarRegistros()
+	})
+
+	$("#btn-cadastrar").on('click', () => {
+		
+		$('#CadastrarModal').modal('show')
+
+		$.ajax({
+			method: 'get',
+			url: '/add',
+			success (dados){
+				$("#modal-ajax").html(dados);
+			}
+		})
+
+	})
+
+	$('#CadastrarModal').on('hide.bs.modal', function (e) {
 		buscarRegistros()
 	})
 
