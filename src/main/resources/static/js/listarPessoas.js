@@ -1,21 +1,18 @@
 $(document).ready(function() {
 
 	const buscarRegistros = () => {
-		
+
 		$("#TabelaOs tbody").html('')
 		
-		let data = ''
+		let data = {}
+
 		let metodo = 'get'
-		let url = "/user/listar"
+		let url = `/user/listar/${window.location.search}`
 
-		if($("#buscar").val() != ''){
-
+		if($("#buscar").val() != '') {
 			metodo = 'post'
-			data = {
-				name: $("#buscar").val()
-			}
+			data.name = $("#buscar").val(),
 			url = "/user/buscarPorNome"
-	
 		}
 
 		$.ajax({
@@ -26,14 +23,40 @@ $(document).ready(function() {
 			before: () => console.log('before'),
 			complete: () => console.log('complete'),
 			success: (dados) => {
+				console.log(dados);
+				
+				$('#paginacao').html('');
+
+				//Mostra a paginação quando existem mais de uma página
+				if(dados.totalPages > 1) {
+					
+					let parametros = window.location.search;
+
+					parametros = parametros.split("&");
+					let url = ''
+					parametros.map((item, indice) => {
+						if(item.includes('pagina')) {
+							parametros[indice] = ''
+						}
+					})
+
+					parametros.map((item, indice) => {
+						url += item
+					})
+
+					console.log(url)
+					for (let i = 0; i < dados.totalPages; i++) {
+						$('#paginacao').append(`<li class="page-item"><a class="page-link" href="?pagina=${i}&${url}" id="pagina-${i+1}">${i+1}</a></li>`)	
+					}
+				}
 				
 				document.querySelector("#feedbackConsulta").style.display = 'none'
 				
-				if(dados.length <= 0){
+				if(dados.content.length <= 0){
 					document.querySelector("#feedbackConsulta").style.display = 'block'
 				}
 
-				dados.map((item, indice) => {
+				dados.content.map((item, indice) => {
 	
 					$("#TabelaOs tbody").append
 					(`

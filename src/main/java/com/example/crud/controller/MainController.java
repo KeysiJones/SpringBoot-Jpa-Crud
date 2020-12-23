@@ -1,6 +1,9 @@
 package com.example.crud.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 //import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 //import org.springframework.web.bind.annotation.RequestBody;
@@ -91,19 +95,32 @@ public class MainController {
   }
   
   @GetMapping(path="/listar")
-  public List<User> getAllUsers() {
+  public Page<User> getAllUsers(Integer pagina, Integer limite) {
+  
+    int paginacao = 0;
+    int limiteRegistros = 5;
+    
+    if(pagina != null) {
+      paginacao = pagina;
+    }
+
+    if(limite != null) {
+      limiteRegistros = limite;
+    }
+    
+    Pageable paginador = PageRequest.of(paginacao, limiteRegistros);
     // This returns a JSON or XML with the users
-    return userRepository.findAllByOrderByNameAsc();
+    return userRepository.findAllByOrderByNameAsc(paginador);
   }
 
   @PostMapping(path="/buscarPorNome")
-  public List<User> getUserByName(String name) {
+  public Page<User> getUserByName(String name) {
     // This returns a JSON or XML with the users
     if(name.length() == 0){
-      return userRepository.findAllByOrderByNameAsc();
+      return userRepository.findAllByOrderByNameAsc(null);
     }
     
-    return userRepository.findByNameContainingOrderByNameAsc(name);
+    return userRepository.findByNameContainingOrderByNameAsc(name, null);
   }
 
   @GetMapping(path="/ListarPessoas")
