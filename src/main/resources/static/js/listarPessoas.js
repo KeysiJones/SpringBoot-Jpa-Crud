@@ -5,14 +5,11 @@ $(document).ready(function() {
 		$("#TabelaOs tbody").html('')
 		
 		let data = {}
-
 		let metodo = 'get'
 		let url = `/user/listar/${window.location.search}`
 
 		if($("#buscar").val() != '') {
-			metodo = 'post'
-			data.name = $("#buscar").val(),
-			url = "/user/buscarPorNome"
+			data.name = $("#buscar").val()
 		}
 
 		$.ajax({
@@ -45,14 +42,37 @@ $(document).ready(function() {
 					})
 
 					console.log(url)
+					let classe = dados.number <= 0  ? 'disabled' : ''
+
+					$('#paginacao').append(`
+					<li class="page-item ${classe}">
+						<a class="page-link" href="?pagina=${dados.number <= 0 ? 0 : dados.number - 1}" aria-label="Previous">
+					  		<span aria-hidden="true">&laquo;</span>
+					  		<span class="sr-only">Previous</span>
+						</a>
+					  </li>
+					`);
+
 					for (let i = 0; i < dados.totalPages; i++) {
 						$('#paginacao').append(`<li class="page-item"><a class="page-link" href="?pagina=${i}&${url}" id="pagina-${i+1}">${i+1}</a></li>`)	
 					}
+					
+					classe = dados.number + 1 >= dados.totalPages ? 'disabled' : ''
+
+					$('#paginacao').append(`
+					<li class="page-item ${classe}">
+						<a class="page-link" href="?pagina=${dados.number + 1 >= dados.totalPages ? dados.number : dados.number + 1}" aria-label="Next">
+					  		<span aria-hidden="true">&raquo;</span>
+					  		<span class="sr-only">Next</span>
+						</a>
+				  	</li>
+					`)
+
 				}
 				
 				document.querySelector("#feedbackConsulta").style.display = 'none'
 				
-				if(dados.content.length <= 0){
+				if (dados.content.length <= 0) {
 					document.querySelector("#feedbackConsulta").style.display = 'block'
 				}
 
