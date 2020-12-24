@@ -1,12 +1,16 @@
 $(document).ready(function() {
 
-	const buscarRegistros = () => {
+	const buscarRegistros = (pagina) => {
 
 		$("#TabelaOs tbody").html('')
-		
+		let url = `/user/listar/${window.location.search}`
 		let data = {}
 		let metodo = 'get'
-		let url = `/user/listar/${window.location.search}`
+		data.pagina = 0;
+		//A página é passada por parâmetro ao chamar o método buscarRegistros, por isso precisa desta condição
+		if(pagina) {
+			data.pagina = pagina
+		}
 
 		if($("#buscar").val() != '') {
 			data.name = $("#buscar").val()
@@ -20,7 +24,6 @@ $(document).ready(function() {
 			before: () => console.log('before'),
 			complete: () => console.log('complete'),
 			success: (dados) => {
-				console.log(dados);
 				
 				$('#paginacao').html('');
 
@@ -45,26 +48,27 @@ $(document).ready(function() {
 					let classe = dados.number <= 0  ? 'disabled' : ''
 
 					$('#paginacao').append(`
-					<li class="page-item ${classe}">
-						<a class="page-link" href="?pagina=${dados.number <= 0 ? 0 : dados.number - 1}" aria-label="Previous">
+					<li class="page-item ${classe}" id='previous'>
+						<button class="page-link" aria-label="Previous">
 					  		<span aria-hidden="true">&laquo;</span>
 					  		<span class="sr-only">Previous</span>
-						</a>
+						</button>
 					  </li>
 					`);
 
 					for (let i = 0; i < dados.totalPages; i++) {
-						$('#paginacao').append(`<li class="page-item"><a class="page-link" href="?pagina=${i}&${url}" id="pagina-${i+1}">${i+1}</a></li>`)	
+						$('#paginacao').append(`<li class="page-item"><button class="page-link" id="pagina-${i+1}">${i+1}</button></li>`)
 					}
-					
+
+
 					classe = dados.number + 1 >= dados.totalPages ? 'disabled' : ''
 
 					$('#paginacao').append(`
-					<li class="page-item ${classe}">
-						<a class="page-link" href="?pagina=${dados.number + 1 >= dados.totalPages ? dados.number : dados.number + 1}" aria-label="Next">
+					<li class="page-item ${classe}" id='next'">
+						<button class="page-link" aria-label="Next">
 					  		<span aria-hidden="true">&raquo;</span>
 					  		<span class="sr-only">Next</span>
-						</a>
+						</button>
 				  	</li>
 					`)
 
@@ -75,6 +79,43 @@ $(document).ready(function() {
 				if (dados.content.length <= 0) {
 					document.querySelector("#feedbackConsulta").style.display = 'block'
 				}
+
+				if (document.querySelector(`#pagina-1`)) {
+					for (let i = 0; i < dados.totalPages; i++) {
+						document.querySelector(`#pagina-${i+1}`).addEventListener('click', () => {
+							buscarRegistros(i)
+						})
+					}
+
+					$("#previous").on('click', () => {
+						if(dados.number > 0){
+							buscarRegistros(dados.number - 1)
+						}
+					})
+
+					$("#next").on('click', () => {
+						if(dados.number + 1 < dados.totalPages){
+							buscarRegistros(dados.number + 1)
+						}
+					})
+					
+					document.querySelector(`#pagina-${dados.number+1}`).style.backgroundColor = '#5bff81'
+					document.querySelector(`#pagina-${dados.number+1}`).style.color = 'white'
+				}
+
+				let filtros = document.querySelectorAll("#filter > button");
+					
+				filtros.forEach((item) => {
+					item.addEventListener('click', () => {
+						let name = $("#buscar").val()
+						let url = `/?limite=${item.innerText}`
+						if(name != '') {
+							url = `/?limite=${item.innerText}&name=${name}`
+						}
+
+						window.location.href = url
+					})
+				})
 
 				dados.content.map((item, indice) => {
 	
@@ -164,7 +205,6 @@ $(document).ready(function() {
 	
 						}
 	
-						
 						btnSalvar.classList.add("d-none");
 						btnEditar.classList.remove("d-none");
 						email.innerHTML = `<td id='email-${item.id}'>${item.email}</td>`
@@ -176,7 +216,6 @@ $(document).ready(function() {
 				$('#spinners').fadeOut();
 				$('#TabelaOs').fadeIn();
 	
-				
 			},
 			error: (erro) => console.log(erro),
 			dataExpression: true
@@ -189,9 +228,7 @@ $(document).ready(function() {
 	})
 
 	$("#btn-cadastrar").on('click', () => {
-		
 		$('#CadastrarModal').modal('show')
-
 		$.ajax({
 			method: 'get',
 			url: '/add',

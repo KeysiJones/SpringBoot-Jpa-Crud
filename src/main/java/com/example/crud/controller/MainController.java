@@ -109,7 +109,6 @@ public class MainController {
     Pageable paginador = PageRequest.of(paginacao, limiteRegistros);
 
     if (name != null) {
-      paginador = PageRequest.of(0, 5);
       return userRepository.findByNameContainingOrderByNameAsc(name, paginador);
     }
     // This returns a JSON or XML with the users
